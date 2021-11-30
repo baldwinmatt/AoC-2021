@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -eu
+
+ROOT_DIR=$(cd $(dirname $0); pwd)
+BUILD_DIR="${ROOT_DIR}/build"
+BUILDS_ROOT_DIR="${BUILD_DIR}/private/builds"
+
+BUILD_TYPE=RelWithDebInfo
+
+if [[ $# > 0 ]]; then
+    case "${1}" in
+        clean)
+            echo "Cleaning build output..."
+            [ -e "${BUILD_DIR}" ] && rm -rf "${BUILD_DIR}"
+            exit 0
+            ;;
+        debug)
+            echo "Runnig Debug build..."
+	    BUILD_TYPE=Debug
+            ;;
+        release)
+            echo "Running Release build..."
+	    BUILD_TYPE=RelWithDebInfo
+            ;;
+        *)
+            echo "Build type must be one of:"
+            echo "  clean    - Clean build output"
+            echo "  release  - builds release, coverage and asan targets"
+            echo "  debug    - (default) Disable optimizations and enable debug options"
+    esac
+fi
+
+THIS_BUILD_DIR="${BUILDS_ROOT_DIR}/${BUILD_TYPE}"
+
+mkdir -p "${THIS_BUILD_DIR}"
+cd "${THIS_BUILD_DIR}"
+
+cmake "${ROOT_DIR}" -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
+cmake --build . 
+cmake --install . --prefix "${BUILD_DIR}"
+
