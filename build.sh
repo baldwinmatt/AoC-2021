@@ -30,7 +30,8 @@ if [[ $# > 0 ]]; then
                 exit 1
             fi
             new_day="${ROOT_DIR}/Day$1"
-            [ -e "${new_day}" ] && exit -1
+            [ -e "${new_day}" ] && echo "ERROR: Day $1 exists" && exit -1
+            echo "Setting up new day in ${new_day}"
             mkdir -p "${new_day}"
             cp "${ROOT_DIR}/template"/* "${new_day}/"
             exit 0
