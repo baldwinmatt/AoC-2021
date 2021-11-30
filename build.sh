@@ -23,11 +23,25 @@ if [[ $# > 0 ]]; then
             echo "Running Release build..."
 	    BUILD_TYPE=RelWithDebInfo
             ;;
+	new)
+            shift
+            if [[ $# = 0 ]]; then
+                echo "Missing day suffix"
+                exit 1
+            fi
+            new_day="${ROOT_DIR}/Day$1"
+            [ -e "${new_day}" ] && exit -1
+            mkdir -p "${new_day}"
+            cp "${ROOT_DIR}/template"/* "${new_day}/"
+            exit 0
+            ;;
         *)
             echo "Build type must be one of:"
-            echo "  clean    - Clean build output"
-            echo "  release  - builds release, coverage and asan targets"
-            echo "  debug    - (default) Disable optimizations and enable debug options"
+            echo "  clean     - Clean build output"
+            echo "  release   - builds release, coverage and asan targets"
+            echo "  debug     - (default) Disable optimizations and enable debug options"
+            echo "  new [num] - Prepare for a new day from an empty template"
+            exit 1
     esac
 fi
 

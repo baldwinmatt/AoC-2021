@@ -23,7 +23,7 @@ endmacro()
 subdirlist(SUBDIRS ${CMAKE_SOURCE_DIR})
 
 foreach(subdir ${SUBDIRS})
-  if (NOT subdir MATCHES build)
+  if (subdir MATCHES Day)
     add_subdirectory(${subdir})
   endif()
 endforeach()
