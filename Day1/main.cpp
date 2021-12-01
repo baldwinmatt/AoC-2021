@@ -64,26 +64,33 @@ int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
 
   int deeper_count = 0;
   int last_depth = INT_MAX;
-  std::list<int> depths;
+  std::pair<int, int> edges;
   const size_t window_size = 3;
+  size_t count = 0;
 
   int last_running_sum = INT_MAX;
   int deeper_running_sum_count = 0;
+  int running_sum = 0;
 
   const auto calculate_depths = [&](const std::string& line) {
     int depth = std::stoi(line);
     deeper_count += (depth > last_depth);
     last_depth = depth;
 
-    depths.push_back(depth);
-    if (depths.size() > window_size) {
-      depths.pop_front();
+    running_sum += depth;
+    if (count == 0) {
+      edges.first = depth;
     }
-    if (depths.size() == window_size) {
-      int running_sum = std::accumulate(depths.begin(), depths.end(), 0);
+    count++;
+
+    if (count >= window_size) {
       deeper_running_sum_count += (running_sum > last_running_sum);
       last_running_sum = running_sum;
+      running_sum -= edges.first;
+      edges.first = edges.second;
     }
+
+    edges.second = depth;
   };
 
   std::for_each(std::istream_iterator<line>(std::cin), std::istream_iterator<line>(), calculate_depths);
