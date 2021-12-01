@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <list>
+#include <numeric>
 
 /*
 --- Day 1: Sonar Sweep ---
@@ -61,16 +64,32 @@ int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
 
   int deeper_count = 0;
   int last_depth = INT_MAX;
+  std::list<int> depths;
+  const size_t window_size = 3;
+
+  int last_running_sum = INT_MAX;
+  int deeper_running_sum_count = 0;
 
   const auto calculate_depths = [&](const std::string& line) {
     int depth = std::stoi(line);
     deeper_count += (depth > last_depth);
     last_depth = depth;
+
+    depths.push_back(depth);
+    if (depths.size() > window_size) {
+      depths.pop_front();
+    }
+    if (depths.size() == window_size) {
+      int running_sum = std::accumulate(depths.begin(), depths.end(), 0);
+      deeper_running_sum_count += (running_sum > last_running_sum);
+      last_running_sum = running_sum;
+    }
   };
 
   std::for_each(std::istream_iterator<line>(std::cin), std::istream_iterator<line>(), calculate_depths);
 
   std::cout << deeper_count << std::endl;
+  std::cout << deeper_running_sum_count << std::endl;
 
   return 0;
 }
