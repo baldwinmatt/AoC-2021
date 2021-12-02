@@ -35,8 +35,13 @@ int main(int argc, char** argv) {
   std::fstream in;
   in.open(argv[1], std::ios::in);
 
+  // Part 1
   int virt = 0;
   int horiz = 0;
+
+  // Part 2
+  int aim = 0;
+  int depth = 0;
 
   const auto parse_movement = [](const std::string &s) {
     const auto pos = s.find(' ');
@@ -56,12 +61,15 @@ int main(int argc, char** argv) {
     switch (m.first) {
       case 'd':
         virt += m.second;
+        aim += m.second;
         break;
       case 'u':
         virt -= m.second;
+        aim -= m.second;
         break;
       case 'f':
         horiz += m.second;
+        depth += (m.second * aim);
         break;
       default:
         break;
@@ -71,6 +79,7 @@ int main(int argc, char** argv) {
   std::for_each(std::istream_iterator<line>(in), std::istream_iterator<line>(), walk_path);
 
   std::cout << "Part 1: " << (virt * horiz) << std::endl;
+  std::cout << "Part 2: " << (horiz * depth) << std::endl;
 
   return 0;
 }
