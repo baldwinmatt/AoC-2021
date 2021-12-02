@@ -40,7 +40,6 @@ int main(int argc, char** argv) {
   int horiz = 0;
 
   // Part 2
-  int aim = 0;
   int depth = 0;
 
   const auto parse_movement = [](const std::string &s) {
@@ -61,15 +60,13 @@ int main(int argc, char** argv) {
     switch (m.first) {
       case 'd':
         virt += m.second;
-        aim += m.second;
         break;
       case 'u':
         virt -= m.second;
-        aim -= m.second;
         break;
       case 'f':
         horiz += m.second;
-        depth += (m.second * aim);
+        depth += (m.second * virt);
         break;
       default:
         break;
