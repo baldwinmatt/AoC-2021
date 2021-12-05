@@ -16,7 +16,7 @@ namespace {
     };
 
     auto open_argv_1(int argc, char **argv) {
-        if (argc != 2) {
+        if (argc < 2) {
             throw std::runtime_error("Insufficient arguments");
         }
 
