@@ -1,12 +1,14 @@
 #include "aoc21/helpers.h"
 
 #include <vector>
+#include <list>
 #include <numeric>
 
 namespace {
   using Square = std::pair<int, bool>;
   using Row = std::vector<Square>;
   using Board = std::vector<Row>;
+  using BoardList = std::list<Board>;
 
   const auto IsBoardComplete = [](const Board& b) {
     // All visited in row
@@ -96,7 +98,7 @@ int main(int argc, char** argv) {
   bingo_drawer.push_back(num);
 
   // Parse the game boards
-  std::vector<Board>boards;
+  BoardList boards;
   Board board;
   while (f.good()) {
     line.resize(0);
@@ -131,16 +133,31 @@ int main(int argc, char** argv) {
   }
 
   // Play games
+  bool has_won = false;
   for (const auto move : bingo_drawer) {
-    std::cout << "Called: " << move << std::endl;
-    for (auto& board : boards) {
-      if (PlayMove(board, move) && IsBoardComplete(board)) {
-        DisplayBoard(board);
-        const auto score = GetBoardScore(board);
-        std::cout << "called: " << move << " score: " << score << " result: " << (score * move) << std::endl;
-        return 0;
+
+    auto it = boards.begin();
+    while (it != boards.end()) {
+      if (PlayMove((*it), move) && IsBoardComplete(*it)) {
+        const auto score = GetBoardScore(*it);
+        if (!has_won) {
+          DisplayBoard(*it);
+          std::cout << "1st: called: " << move << " score: " << score << " result: " << (score * move) << std::endl;
+          has_won = true;
+        }
+        if (boards.size() == 1) {
+          DisplayBoard(*it);
+          std::cout << "Last: called: " << move << " score: " << score << " result: " << (score * move) << std::endl;
+          return 0;
+        }
+        auto tmp = it;
+        it++;
+        boards.erase(tmp);
+      } else {
+        it++;
       }
     }
+
   }
 
   return 0;

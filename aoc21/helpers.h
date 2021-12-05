@@ -33,4 +33,12 @@ namespace {
         return os << "\e[0m";
     }
 
+#ifndef NDEBUG
+#define DEBUG(x) do { \
+    x; \
+} while (0)
+#else
+#define DEBUG(x)
+#endif
+
 };
