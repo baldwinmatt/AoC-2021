@@ -37,19 +37,16 @@ int main(int argc, char** argv) {
 
   int generation = 0;
   while (generation < 256) {
-    FishCounts next_fish;
     const int64_t recycled = fish[0];
     int64_t count = 0;
     for (size_t i = 1; i < fish.size(); i ++) {
       count += fish[i];
-      next_fish[i - 1] = fish[i];
+      fish[i - 1] = fish[i];
     }
     count += recycled;
-    next_fish[6] += recycled;
+    fish[6] += recycled;
     count += recycled;
-    next_fish[8] = recycled;
-    
-    fish = next_fish;
+    fish[8] = recycled;
 
     generation++;
     DEBUG(std::cout << "Generation: " << generation << " count: " << count << std::endl);
