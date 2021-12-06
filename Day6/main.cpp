@@ -15,6 +15,7 @@ int main(int argc, char** argv) {
   f.close();
   
   FishCounts fish { };
+  int64_t count = 0;
   {
     std::stringstream ss(input);
     std::string segment;
@@ -23,21 +24,20 @@ int main(int argc, char** argv) {
       num = std::stoi(segment);
       assert(num <= MaxLifetime);
       fish[num]++;
+      count ++;
     }
     num = std::stoi(segment);
     assert(num <= MaxLifetime);
     fish[num]++;
+    count ++;
   }
 
   int generation = 0;
   while (generation < 256) {
     const int64_t recycled = fish[0];
-    int64_t count = 0;
     for (size_t i = 1; i < fish.size(); i ++) {
-      count += fish[i];
       fish[i - 1] = fish[i];
     }
-    count += recycled;
     fish[6] += recycled;
     count += recycled;
     fish[8] = recycled;
