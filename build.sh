@@ -46,12 +46,18 @@ if [[ $# > 0 ]]; then
     esac
 fi
 
+BUILD_CMD="cmake --build ."
+THIS_CMAKE_ARGS=""
 THIS_BUILD_DIR="${BUILDS_ROOT_DIR}/${BUILD_TYPE}"
+if [[ "$(command -v ninja)" ]]; then
+    THIS_CMAKE_ARGS=-GNinja
+    BUILD_CMD=ninja
+fi
 
 mkdir -p "${THIS_BUILD_DIR}"
 cd "${THIS_BUILD_DIR}"
 
-cmake "${ROOT_DIR}" -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
-cmake --build . 
+cmake ${THIS_CMAKE_ARGS} "${ROOT_DIR}" -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
+${BUILD_CMD}
 cmake --install . --prefix "${BUILD_DIR}"
 
