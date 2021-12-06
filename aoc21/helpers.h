@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <string_view>
 
 namespace {
     class line {
@@ -41,4 +42,22 @@ namespace {
 #define DEBUG(x)
 #endif
 
+};
+
+namespace aoc {
+    bool getline(std::istream& s, std::string& out, const std::string_view delims) {
+        char c;
+        out.resize(0);
+        while (s.good() && (c = s.get())) {
+            if (delims.find(c) != std::string_view::npos) {
+                if (out.empty()) {
+                    continue;
+                }
+                return s.good();
+            }
+            out.append(&c, 1);
+        }
+        return s.good();
+    }
+    bool getline(std::istream& s, std::string& out, const char delim) { return getline(s, out, std::string_view(&delim, 1)); }
 };
