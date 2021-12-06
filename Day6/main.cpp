@@ -38,25 +38,33 @@ int main(int argc, char** argv) {
   constexpr int pt_1_end = 80;
   constexpr int pt_2_end = 256;
 
+  int head = 0;
+  int tail = MaxLifetime;
+  int rebirth_at = 6;
+
   for (int generation = 0; generation < pt_1_end; generation++) {
-    const int64_t recycled = fish[0];
-    for (size_t i = 1; i < fish.size(); i ++) {
-      fish[i - 1] = fish[i];
-    }
-    fish[6] += recycled;
+    const int64_t recycled = fish[head];
+    // shift left
+    head = (head + 1) % fish.size();
+    tail = (tail + 1) % fish.size();
+    rebirth_at = (rebirth_at + 1) % fish.size();
+
+    fish[rebirth_at] += recycled;
     count += recycled;
-    fish[8] = recycled;
+    fish[tail] = recycled;
   }
   std::cout << "Generation: " << pt_1_end << " count: " << count << std::endl;
 
   for (int generation = pt_1_end; generation < pt_2_end; generation++) {
-    const int64_t recycled = fish[0];
-    for (size_t i = 1; i < fish.size(); i ++) {
-      fish[i - 1] = fish[i];
-    }
-    fish[6] += recycled;
+    const int64_t recycled = fish[head];
+    // shift left
+    head = (head + 1) % fish.size();
+    tail = (tail + 1) % fish.size();
+    rebirth_at = (rebirth_at + 1) % fish.size();
+
+    fish[rebirth_at] += recycled;
     count += recycled;
-    fish[8] = recycled;
+    fish[tail] = recycled;
   }
   std::cout << "Generation: " << pt_2_end << " count: " << count << std::endl;
 
