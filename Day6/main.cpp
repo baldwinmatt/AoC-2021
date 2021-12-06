@@ -5,7 +5,6 @@
 #include <vector>
 
 constexpr int MaxLifetime = 8;
-using FishLifetimes = std::vector<int>;
 using FishCounts = std::array<int64_t, MaxLifetime + 1>;
 
 int main(int argc, char** argv) {
@@ -15,24 +14,19 @@ int main(int argc, char** argv) {
   std::getline(f, input);
   f.close();
   
-  FishLifetimes fish_ages;
+  FishCounts fish { };
   {
     std::stringstream ss(input);
     std::string segment;
     int num;
     while (aoc::getline(ss, segment, ',')) {
       num = std::stoi(segment);
-      assert(num < 9);
-      fish_ages.push_back(num);
+      assert(num <= MaxLifetime);
+      fish[num]++;
     }
     num = std::stoi(segment);
-    assert(num < 9);
-    fish_ages.push_back(num);
-  }
-
-  FishCounts fish { };
-  for (const auto f : fish_ages) {
-    fish[f]++;
+    assert(num <= MaxLifetime);
+    fish[num]++;
   }
 
   int generation = 0;
