@@ -1,19 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <string_view>
+#include "aoc21/helpers.h"
 #include <set>
 
 namespace {
-    class line {
-        std::string data;
-    public:
-        friend std::istream &operator>>(std::istream &is, line &l) {
-            std::getline(is, l.data);
-            return is;
-        }
-        operator std::string() const { return data; }    
-    }; 
-
     using Movement = std::pair<char, int>;
 
     constexpr std::string_view DIRECTION_FORWARD("forward");
@@ -28,12 +16,7 @@ namespace {
 };
 
 int main(int argc, char** argv) {
-  if (argc < 2) {
-    return -1;
-  }
-
-  std::fstream in;
-  in.open(argv[1], std::ios::in);
+  auto f = aoc::open_argv_1(argc, argv);
 
   // Part 1
   int virt = 0;
@@ -73,7 +56,10 @@ int main(int argc, char** argv) {
     }
   };
 
-  std::for_each(std::istream_iterator<line>(in), std::istream_iterator<line>(), walk_path);
+  std::string l;
+  while (aoc::getline(f, l)) {
+    walk_path(l);
+  }
 
   std::cout << "Part 1: " << (virt * horiz) << std::endl;
   std::cout << "Part 2: " << (horiz * depth) << std::endl;

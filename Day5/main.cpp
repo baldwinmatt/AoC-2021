@@ -92,7 +92,7 @@ const auto ParsePointPair = [](const std::string& line) {
 };
 
 int main(int argc, char** argv) {
-  auto f = open_argv_1(argc, argv);
+  auto f = aoc::open_argv_1(argc, argv);
   bool diaganols = false;
   if (argc == 3 && argv[2][0] == '2') {
     diaganols = true;
@@ -138,7 +138,10 @@ int main(int argc, char** argv) {
     }
   };
 
-  std::for_each(std::istream_iterator<line>(f), std::istream_iterator<line>(), read_lines);
+  std::string s;
+  while (aoc::getline(f, s)) {
+    read_lines(s);
+  }
 
   int points = 0;
   points = std::reduce(grid.begin(), grid.end(), 0, [](int p, const auto& c) -> int {

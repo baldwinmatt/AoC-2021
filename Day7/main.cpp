@@ -1,26 +1,18 @@
 #include "aoc21/helpers.h"
-#include <sstream>
 #include <numeric>
 #include <vector>
 
 using InitialPositions = std::vector<int>;
 
 int main(int argc, char** argv) {
-  auto f = open_argv_1(argc, argv);
+  auto f = aoc::open_argv_1(argc, argv);
 
   std::string input;
   std::getline(f, input);
   f.close();
   
   InitialPositions pos { };
-
-  {
-    std::stringstream ss(input);
-    std::string segment;
-    while (aoc::getline(ss, segment, ',')) {
-      pos.push_back(std::stoi(segment));
-    }
-  }
+  aoc::parse_as_integers(input, ',', [&pos](int i) -> void { pos.push_back(i); });
 
   std::sort(pos.begin(), pos.end());
   const size_t count = pos.size();

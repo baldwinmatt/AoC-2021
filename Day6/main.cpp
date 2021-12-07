@@ -9,7 +9,7 @@ constexpr int MaxLifetime = 8;
 using FishCounts = std::array<int64_t, MaxLifetime + 1>;
 
 int main(int argc, char** argv) {
-  auto f = open_argv_1(argc, argv);
+  auto f = aoc::open_argv_1(argc, argv);
 
   std::string input;
   std::getline(f, input);
@@ -18,17 +18,11 @@ int main(int argc, char** argv) {
   FishCounts fish { };
   int64_t count = 0;
 
-  {
-    std::stringstream ss(input);
-    std::string segment;
-    int num;
-    while (aoc::getline(ss, segment, ',')) {
-      num = std::stoi(segment);
-      assert(num <= MaxLifetime);
-      fish[num]++;
-      count ++;
-    }
-  }
+  aoc::parse_as_integers(input, ',', [&fish, &count](int i) -> void {
+    assert(i <= MaxLifetime);
+    fish[i]++;
+    count++;
+  });
 
   const auto start = std::chrono::high_resolution_clock::now();
   constexpr int pt_1_end = 80;

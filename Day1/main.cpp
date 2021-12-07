@@ -1,7 +1,4 @@
-#include <iostream>
-#include <string>
-#include <list>
-#include <numeric>
+#include "aoc21/helpers.h"
 
 /*
 --- Day 1: Sonar Sweep ---
@@ -48,19 +45,9 @@ In this example, there are 7 measurements that are larger than the previous meas
 How many measurements are larger than the previous measurement?
 */
 
-namespace {
-    class line {
-        std::string data;
-    public:
-        friend std::istream &operator>>(std::istream &is, line &l) {
-            std::getline(is, l.data);
-            return is;
-        }
-        operator std::string() const { return data; }    
-    };  
-};
+int main(int argc, char** argv) {
 
-int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
+  auto f = aoc::open_argv_1(argc, argv);
 
   int deeper_count = 0;
   int last_depth = INT_MAX;
@@ -72,8 +59,7 @@ int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
   int deeper_running_sum_count = 0;
   int running_sum = 0;
 
-  const auto calculate_depths = [&](const std::string& line) {
-    int depth = std::stoi(line);
+  const auto calculate_depths = [&](int depth) {
     deeper_count += (depth > last_depth);
     last_depth = depth;
 
@@ -93,7 +79,7 @@ int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
     edges.second = depth;
   };
 
-  std::for_each(std::istream_iterator<line>(std::cin), std::istream_iterator<line>(), calculate_depths);
+  aoc::parse_as_integers(f, calculate_depths);
 
   std::cout << "Part 1: " << deeper_count << std::endl;
   std::cout << "Part 2: " << deeper_running_sum_count << std::endl;

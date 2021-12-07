@@ -60,7 +60,7 @@ namespace {
   const auto DisplayRow = [](const Row& row) {
     for (auto &sq : row) {
       if (sq.second) {
-        std::cout << bold_on << sq.first << bold_off << " ";
+        std::cout << aoc::bold_on << sq.first << aoc::bold_off << " ";
       } else {
         std::cout << sq.first << " ";
 
@@ -79,7 +79,7 @@ namespace {
 
 int main(int argc, char** argv) {
 
-  auto f = open_argv_1(argc, argv);
+  auto f = aoc::open_argv_1(argc, argv);
 
   // Parse the drawing order
   std::vector<int>bingo_drawer;
