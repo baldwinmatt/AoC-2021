@@ -23,7 +23,7 @@ if [[ $# > 0 ]]; then
             echo "Running Release build..."
 	    BUILD_TYPE=RelWithDebInfo
             ;;
-	new)
+	    new)
             shift
             if [[ $# = 0 ]]; then
                 echo "Missing day suffix"
@@ -36,12 +36,27 @@ if [[ $# > 0 ]]; then
             cp "${ROOT_DIR}/template"/* "${new_day}/"
             exit 0
             ;;
+        run)
+            shift
+            if [[ $# = 0 ]]; then
+                for f in ${BUILD_DIR}/bin/Day*; do
+                    day=$(basename "${f}")
+                    echo ${day}
+                    ${f} ${ROOT_DIR}/inputs/${day}.txt
+                    echo
+                done
+            else
+                ${BUILD_DIR}/bin/Day${1} ${ROOT_DIR}/inputs/Day${1}.txt
+            fi
+            exit 0
+            ;;
         *)
             echo "Build type must be one of:"
             echo "  clean     - Clean build output"
             echo "  release   - builds release, coverage and asan targets"
             echo "  debug     - (default) Disable optimizations and enable debug options"
             echo "  new [num] - Prepare for a new day from an empty template"
+            echo "  run (day) - Run the executables, optionally run specific day"
             exit 1
     esac
 fi
