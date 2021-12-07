@@ -28,10 +28,6 @@ int main(int argc, char** argv) {
       fish[num]++;
       count ++;
     }
-    num = std::stoi(segment);
-    assert(num <= MaxLifetime);
-    fish[num]++;
-    count ++;
   }
 
   const auto start = std::chrono::high_resolution_clock::now();

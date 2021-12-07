@@ -53,11 +53,11 @@ namespace aoc {
                 if (out.empty()) {
                     continue;
                 }
-                return s.good();
+                return true;
             }
             out.append(&c, 1);
         }
-        return s.good();
+        return out.empty() ? s.good() : true;
     }
     bool getline(std::istream& s, std::string& out, const char delim) { return getline(s, out, std::string_view(&delim, 1)); }
 };

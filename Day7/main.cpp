@@ -20,7 +20,6 @@ int main(int argc, char** argv) {
     while (aoc::getline(ss, segment, ',')) {
       pos.push_back(std::stoi(segment));
     }
-    pos.push_back(std::stoi(segment));
   }
 
   std::sort(pos.begin(), pos.end());
