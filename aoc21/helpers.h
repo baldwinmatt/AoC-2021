@@ -14,6 +14,8 @@
 #define DEBUG(x)
 #endif
 
+#define STRING_CONSTANT(symbol, value) constexpr std::string_view symbol(value)
+
 namespace aoc {
     auto open_argv_1(int argc, char **argv) {
         if (argc < 2) {
@@ -43,7 +45,9 @@ namespace aoc {
                 }
                 return true;
             }
-            out.append(&c, 1);
+            if (c > 0) {
+                out.append(&c, 1);
+            }
         }
         return !out.empty() || s.good();
     }
@@ -60,7 +64,9 @@ namespace aoc {
                     if (out.empty()) { continue; }
                     return true;
                 default:
-                    out.append(&c, 1);
+                    if (c > 0) {
+                        out.append(&c, 1);
+                    }
                     break;
             }
         }
