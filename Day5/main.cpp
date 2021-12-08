@@ -92,13 +92,10 @@ const auto ParsePointPair = [](const std::string& line) {
 };
 
 int main(int argc, char** argv) {
-  auto f = aoc::open_argv_1(argc, argv);
-  bool diaganols = false;
-  if (argc == 3 && argv[2][0] == '2') {
-    diaganols = true;
-  }
 
+  bool diaganols = false;
   Grid grid;
+
   const auto read_lines = [&grid, &diaganols](const std::string& line) {
     const auto line_points = ParsePointPair(line);
 
@@ -138,18 +135,24 @@ int main(int argc, char** argv) {
     }
   };
 
-  std::string s;
-  while (aoc::getline(f, s)) {
-    read_lines(s);
+  for (int part = 0; part < 2; part++) {
+    auto f = aoc::open_argv_1(argc, argv);
+    std::string s;
+
+    diaganols = !!part;
+    while (aoc::getline(f, s)) {
+      read_lines(s);
+    }
+
+    int points = 0;
+    points = std::reduce(grid.begin(), grid.end(), 0, [](int p, const auto& c) -> int {
+      p += (c.second >= 2);
+      return p;
+    });
+
+    std::cout << "Part " << (part + 1) << ": " << points << std::endl;
+    grid.clear();
   }
-
-  int points = 0;
-  points = std::reduce(grid.begin(), grid.end(), 0, [](int p, const auto& c) -> int {
-    p += (c.second >= 2);
-    return p;
-  });
-
-  std::cout << points << std::endl;
 
   return 0;
 }
