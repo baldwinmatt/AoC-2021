@@ -5,6 +5,8 @@
 using InitialPositions = std::vector<int>;
 
 int main(int argc, char** argv) {
+  aoc::AutoTimer t;
+
   auto f = aoc::open_argv_1(argc, argv);
 
   std::string input;

@@ -136,7 +136,10 @@ int main(int argc, char** argv) {
   };
 
   for (int part = 0; part < 2; part++) {
+    aoc::AutoTimer t;
+
     auto f = aoc::open_argv_1(argc, argv);
+
     std::string s;
 
     diaganols = !!part;

@@ -8,6 +8,8 @@ constexpr int MaxLifetime = 8;
 using FishCounts = std::array<int64_t, MaxLifetime + 1>;
 
 int main(int argc, char** argv) {
+  aoc::AutoTimer t;
+
   auto f = aoc::open_argv_1(argc, argv);
 
   std::string input;
@@ -23,7 +25,6 @@ int main(int argc, char** argv) {
     count++;
   });
 
-  const auto start = std::chrono::high_resolution_clock::now();
   constexpr int pt_1_end = 80;
   constexpr int pt_2_end = 256;
 
@@ -56,8 +57,6 @@ int main(int argc, char** argv) {
     fish[tail] = recycled;
   }
   std::cout << "Generation: " << pt_2_end << " count: " << count << std::endl;
-
-  aoc::calculate_time(start);
 
   return 0;
 }

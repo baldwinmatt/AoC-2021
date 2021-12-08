@@ -131,6 +131,29 @@ namespace aoc {
         double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
         time_taken *= 1e-9;
 
-        std::cout << "Runtime : " << std::fixed << time_taken << std::setprecision(9) << " sec" << std::endl;
+        std::cout << "Elapsed : " << std::fixed << time_taken << std::setprecision(9) << " sec" << std::endl;
     };
+
+    class AutoTimer {
+    private:
+        std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+
+    public:
+        AutoTimer()
+            : start_(std::chrono::high_resolution_clock::now())
+        { }
+
+        ~AutoTimer() {
+            aoc::calculate_time(start_);
+        }
+
+        void elapsed() const {
+            aoc::calculate_time(start_);
+        }
+
+        void reset() {
+            start_ = std::chrono::high_resolution_clock::now();
+        }
+    };
+
 };

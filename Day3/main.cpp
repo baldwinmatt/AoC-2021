@@ -4,6 +4,7 @@
 #include <set>
 #include <list>
 #include <numeric>
+#include "aoc21/helpers.h"
 
 namespace {
   using BinaryNumber = std::vector<bool>;
@@ -41,13 +42,10 @@ namespace {
   };
 };
 
-int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
-  if (argc < 2) {
-    return -1;
-  }
+int main(int argc, char** argv) {
+  aoc::AutoTimer t;
 
-  std::ifstream in;
-  in.open(argv[1], std::ios::in);
+  auto in = aoc::open_argv_1(argc, argv);
 
   size_t pos = 0;
   std::vector<size_t>frequencies;

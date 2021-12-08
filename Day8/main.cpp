@@ -120,6 +120,8 @@ namespace {
 };
 
 int main(int argc, char** argv) {
+  aoc::AutoTimer t;
+
   auto f = aoc::open_argv_1(argc, argv);
 
   std::string line;
@@ -157,7 +159,6 @@ int main(int argc, char** argv) {
   };
   const auto decoder = MakeDecoder(NormalizedInputs);
 
-  const auto start = std::chrono::high_resolution_clock::now();
   while (aoc::getline(f, line)) {
     const auto io_pair = parse_pair(line);
 
@@ -176,8 +177,6 @@ int main(int argc, char** argv) {
   std::cout << "Part 2: " << sum << std::endl;
   // Part 1: 532
   // Part 2: 1011284
-
-  aoc::calculate_time(start);
 
   return 0;
 }
