@@ -88,14 +88,32 @@ namespace {
 
     int output = 0;
     for (const auto& d : io_pair.second) {
-      int val = 0;
-      for (const char c : d) {
-        val += counts[c];
+      int digit = 0;
+      switch (d.size()) {
+        case 2:
+          digit = 1;
+          break;
+        case 3:
+          digit = 7;
+          break;
+        case 4:
+          digit = 4;
+          break;
+        case 7:
+          digit = 8;
+          break;
+        default:
+          int val = 0;
+          for (const char c : d) {
+            val += counts[c];
+          }
+          const auto it = decoded.find(val);
+          assert(it != decoded.end());
+          digit = it->second;
+          break;
       }
       output *= 10;
-      const auto it = decoded.find(val);
-      assert(it != decoded.end());
-      output += it->second;
+      output += digit;
     }
     return output;
   };
@@ -133,7 +151,7 @@ int main(int argc, char** argv) {
       for (const char c : inputs[i]) {
         val += counts[c];
       }
-      std::cout << i << " = " << val << std::endl;
+      DEBUG(std::cout << i << " = " << val << std::endl);
       map.insert(std::pair<int, int>(val, i));
     }
     return map;
@@ -159,7 +177,6 @@ int main(int argc, char** argv) {
   std::cout << "Part 2: " << sum << std::endl;
   // Part 1: 532
   // Part 2: 1011284
-
 
   const auto end = std::chrono::high_resolution_clock::now();
 
