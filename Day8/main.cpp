@@ -126,7 +126,6 @@ int main(int argc, char** argv) {
   size_t is_decodable = 0;
   size_t sum = 0;
 
-
   const auto MakeDecoder = [](const auto inputs) {
     SignalMap counts{
       { 'a', 0 },
