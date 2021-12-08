@@ -1,8 +1,8 @@
-#include <iostream>
+#include "aoc21/helpers.h"
 
-int main([[gnu::unused]] int argc, [[gnu::unused]] char** argv) {
+int main(int argc, char** argv) {
 
-  std::cout << "Hello, World!" << std::endl;
+  auto f = aoc::open_argv_1(argc, argv);
 
   return 0;
 }
