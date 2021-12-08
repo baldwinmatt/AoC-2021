@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <chrono>
 
 #ifndef NDEBUG
 #define DEBUG(x) do { \
@@ -121,4 +122,15 @@ namespace aoc {
             } catch (...) { }
         }
     }
+
+    // Needs to be a lambda due to use of auto
+    auto calculate_time = [](const auto start) {
+        const auto end = std::chrono::high_resolution_clock::now();
+
+        // Calculating total time taken by the program.
+        double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+        time_taken *= 1e-9;
+
+        std::cout << "Runtime : " << std::fixed << time_taken << std::setprecision(9) << " sec" << std::endl;
+    };
 };

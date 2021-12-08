@@ -178,15 +178,7 @@ int main(int argc, char** argv) {
   // Part 1: 532
   // Part 2: 1011284
 
-  const auto end = std::chrono::high_resolution_clock::now();
-
-  // Calculating total time taken by the program.
-  double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-  time_taken *= 1e-9;
-
-  std::cout << "Time taken by program is : " << std::fixed
-        << time_taken << std::setprecision(9);
-  std::cout << " sec" << std::endl;
+  aoc::calculate_time(start);
 
   return 0;
 }

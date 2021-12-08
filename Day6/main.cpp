@@ -3,7 +3,6 @@
 #include <array>
 #include <numeric>
 #include <vector>
-#include <chrono>
 
 constexpr int MaxLifetime = 8;
 using FishCounts = std::array<int64_t, MaxLifetime + 1>;
@@ -58,15 +57,8 @@ int main(int argc, char** argv) {
   }
   std::cout << "Generation: " << pt_2_end << " count: " << count << std::endl;
 
-  const auto end = std::chrono::high_resolution_clock::now();
+  aoc::calculate_time(start);
 
-  // Calculating total time taken by the program.
-  double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-  time_taken *= 1e-9;
-
-  std::cout << "Time taken by program is : " << std::fixed
-        << time_taken << std::setprecision(9);
-  std::cout << " sec" << std::endl;
   return 0;
 }
 
