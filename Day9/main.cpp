@@ -1,5 +1,7 @@
 #include "aoc21/helpers.h"
 #include <vector>
+#include <queue>
+#include <utility>
 
 /*
 --- Day 9: Smoke Basin ---
@@ -23,11 +25,56 @@ In the above example, there are four low points, all highlighted: two are in the
 The risk level of a low point is 1 plus its height. In the above example, the risk levels of the low points are 2, 1, 6, and 6. The sum of the risk levels of all low points in the heightmap is therefore 15.
 
 Find all of the low points on your heightmap. What is the sum of the risk levels of all low points on your heightmap?
+
+--- Part Two ---
+Next, you need to find the largest basins so you know what areas are most important to avoid.
+
+A basin is all locations that eventually flow downward to a single low point. Therefore, every low point has a basin, although some basins are very small. Locations of height 9 do not count as being in any basin, and all other locations will always be part of exactly one basin.
+
+The size of a basin is the number of locations within the basin, including the low point. The example above has four basins.
+
+The top-left basin, size 3:
+
+2199943210
+3987894921
+9856789892
+8767896789
+9899965678
+The top-right basin, size 9:
+
+2199943210
+3987894921
+9856789892
+8767896789
+9899965678
+The middle basin, size 14:
+
+2199943210
+3987894921
+9856789892
+8767896789
+9899965678
+The bottom-right basin, size 9:
+
+2199943210
+3987894921
+9856789892
+8767896789
+9899965678
+Find the three largest basins and multiply their sizes together. In the above example, this is 9 * 14 * 9 = 1134.
+
+What do you get if you multiply together the sizes of the three largest basins?
+
 */
 
 namespace {
   using Row = std::vector<int>;
   using HeightMap = std::vector<Row>;
+  using VisitedRow = std::vector<bool>;
+  using VisitedMap = std::vector<VisitedRow>;
+
+  using Point = std::pair<int, int>;
+  using PointQueue = std::queue<Point>;
 
   const auto ParseRow = [](const auto& line) {
     Row r;
@@ -59,6 +106,37 @@ namespace {
     return r;
   };
 
+  // Flood fill a basin, and return its size
+  const auto FillBasin = [](const HeightMap& map, size_t x, size_t y, VisitedMap& done) {
+    size_t size = 0;
+
+    PointQueue q;
+    q.emplace(y, x);
+    while (!q.empty()) {
+      const auto p = q.front(); q.pop();
+
+      if (done[p.first][p.second]) {
+        continue;
+      }
+
+      done[p.first][p.second] = true;
+
+      const auto height = map[p.first][p.second];
+      if (height == 9) {
+        continue;
+      }
+
+      if (!done[p.first - 1][p.second]) { q.emplace(p.first - 1, p.second); };
+      if (!done[p.first + 1][p.second]) { q.emplace(p.first + 1, p.second); };
+      if (!done[p.first][p.second - 1]) { q.emplace(p.first, p.second - 1); };
+      if (!done[p.first][p.second + 1]) { q.emplace(p.first, p.second + 1); };
+      size++;
+    }
+
+    return size;
+  };
+
+  // Determine if a point is a low point, that is, it is lower than all its neighbours
   const auto IsLowPoint = [](const HeightMap& map, size_t x, size_t y) {
     const auto height = map[y][x];
 
@@ -81,31 +159,48 @@ int main(int argc, char** argv) {
   auto f = aoc::open_argv_1(argc, argv);
 
   HeightMap map;
+  VisitedMap done;
   std::string line;
   while (aoc::getline(f, line)) {
     const auto r = ParseRow(line);
+    VisitedRow vr(r.size(), false);
     assert (map.empty() || map[0].size() == r.size());
     if (map.empty()) {
       Row pad(r.size(), 9);
       map.push_back(pad);
+
+      done.push_back(vr);
+      done.push_back(vr);
     }
+
     map.push_back(r);
+    done.push_back(vr);
   }
 
   Row pad(map[0].size(), 9);
   map.push_back(pad);
 
   size_t risk_level = 0;
+  std::vector<size_t> basin_sizes;
   for (size_t y = 1; y < map.size() - 1; y++) {
     for (size_t x = 1; x < map[y].size() - 1; x++) {
       if (IsLowPoint(map, x, y)) {
         // Risk level is hieght + 1 of a low point
         risk_level += map[y][x] + 1;
+
+        size_t size = FillBasin(map, x, y, done);
+        if (size > 0) {
+          basin_sizes.push_back(size);
+        }
       }
     }
   }
-  
+
+  std::sort(basin_sizes.begin(), basin_sizes.end(), std::greater<>());
+  assert(basin_sizes >= 3);
+
   std::cout << "Part 1: " << risk_level << std::endl;
+  std::cout << "Part 2: " << (basin_sizes[0] * basin_sizes[1] * basin_sizes[2]) << std::endl;
 
   return 0;
 }
