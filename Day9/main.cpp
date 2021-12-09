@@ -33,7 +33,8 @@ namespace {
     Row r;
 
     // We know how big the row will be
-    r.reserve(line.size());
+    r.reserve(line.size() + 2);
+    r.push_back(9);
 
     for (const auto c : line) {
       switch (c) {
@@ -53,36 +54,21 @@ namespace {
           break;
       }
     }
+    r.push_back(9);
 
     return r;
   };
 
   const auto IsLowPoint = [](const HeightMap& map, size_t x, size_t y) {
-    const size_t max_y = map.size() - 1;
-    const size_t max_x = map[0].size() - 1;
     const auto height = map[y][x];
 
-    if (x == 0) {
-      if (y == 0) {
-        return height < map[y][x + 1] && height < map[y + 1][x];
-      } else if (y == max_y) {
-        return height < map[y][x + 1] && height < map[y - 1][x];
-      }
-      return height < map[y - 1][x] && height < map[y][x + 1] && height < map[y + 1][x];
-    } else if (x == max_x) {
-      if (y == 0) {
-        return height < map[y][x - 1] && height < map[y + 1][x];
-      } else if (y == max_y) {
-        return height < map[y][x - 1] && height < map[y - 1][x];
-      }
-      return height < map[y][x - 1] && height < map[y - 1][x] && height < map[y + 1][x];
-    } else if (y == 0) {
-      // We already checked x == 0 and x == max_x
-      return height < map[y][x - 1] && height < map[y + 1][x] && height < map[y][x + 1];
-    } else if (y == max_y) {
-      // We already checked x == 0 and x == max_x
-      return height < map[y][x - 1] && height < map[y - 1][x] && height < map[y][x + 1];
+    if (height == 9) {
+      return false;
     }
+
+    assert(x > 0 && x < map[0].size() - 1);
+    assert(y > 0 && y < map.size() - 1);
+
     return height < map[y][x - 1] && height < map[y][x + 1] &&
            height < map[y - 1][x] && height < map[y + 1][x];
   };
@@ -99,12 +85,19 @@ int main(int argc, char** argv) {
   while (aoc::getline(f, line)) {
     const auto r = ParseRow(line);
     assert (map.empty() || map[0].size() == r.size());
+    if (map.empty()) {
+      Row pad(r.size(), 9);
+      map.push_back(pad);
+    }
     map.push_back(r);
   }
 
+  Row pad(map[0].size(), 9);
+  map.push_back(pad);
+
   size_t risk_level = 0;
-  for (size_t y = 0; y < map.size(); y++) {
-    for (size_t x = 0; x < map[y].size(); x++) {
+  for (size_t y = 1; y < map.size() - 1; y++) {
+    for (size_t x = 1; x < map[y].size() - 1; x++) {
       if (IsLowPoint(map, x, y)) {
         // Risk level is hieght + 1 of a low point
         risk_level += map[y][x] + 1;
