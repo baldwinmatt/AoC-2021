@@ -126,10 +126,10 @@ namespace {
         continue;
       }
 
-      if (!done[p.first - 1][p.second]) { q.emplace(p.first - 1, p.second); };
-      if (!done[p.first + 1][p.second]) { q.emplace(p.first + 1, p.second); };
-      if (!done[p.first][p.second - 1]) { q.emplace(p.first, p.second - 1); };
-      if (!done[p.first][p.second + 1]) { q.emplace(p.first, p.second + 1); };
+      if (!done[p.first - 1][p.second]) { q.emplace(p.first - 1, p.second); }
+      if (!done[p.first + 1][p.second]) { q.emplace(p.first + 1, p.second); }
+      if (!done[p.first][p.second - 1]) { q.emplace(p.first, p.second - 1); }
+      if (!done[p.first][p.second + 1]) { q.emplace(p.first, p.second + 1); }
       size++;
     }
 
