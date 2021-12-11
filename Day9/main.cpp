@@ -197,7 +197,7 @@ int main(int argc, char** argv) {
   }
 
   std::sort(basin_sizes.begin(), basin_sizes.end(), std::greater<>());
-  assert(basin_sizes >= 3);
+  assert(basin_sizes.size() >= 3);
 
   std::cout << "Part 1: " << risk_level << std::endl;
   std::cout << "Part 2: " << (basin_sizes[0] * basin_sizes[1] * basin_sizes[2]) << std::endl;
