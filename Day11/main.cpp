@@ -25,7 +25,7 @@ namespace {
 
   const auto step = [](Grid& grid) {
     FlashedQueue q;
-    FlashedSet s;
+    size_t flashed = 0;
 
     for (size_t y = 0; y < grid.size(); y++) {
       for (size_t x = 0; x < grid[0].size(); x++) {
@@ -40,7 +40,7 @@ namespace {
 
         if (grid[y][x] > 9) {
           q.push_back(Point(y, x));
-          s.insert(Point(y, x));
+          flashed++;
           grid[y][x] = 0;
         }
       }
@@ -67,16 +67,16 @@ namespace {
 
         if (grid[y][x] > 9) {
           q.push_back(Point(y, x));
-          s.insert(Point(y, x));
+          flashed++;
           grid[y][x] = 0;
         }
       }
     }
 
-    return s.size();
+    return flashed;
   };
 
-  const auto DisplayGrid = [](const Grid& g) {
+  void DisplayGrid(const Grid& g) {
     for (const auto& r : g) {
       for (const auto c : r) {
         if (c == DEAD_OCT) {
@@ -90,7 +90,7 @@ namespace {
       }
       std::cout << std::endl;
     }
-  };
+  }
 };
 
 int main(int argc, char** argv) {
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
   for (size_t i = 0; i < 100 || first_syncd == SIZE_T_MAX; i++) {
     const auto flashed = step(grid);
     if (flashed == total_oct) {
-      DisplayGrid(grid);
+      DEBUG(DisplayGrid(grid));
       first_syncd = std::min(first_syncd, i + 1);
     }
     if (i < 100) {
