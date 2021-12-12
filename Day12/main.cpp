@@ -13,19 +13,12 @@ namespace {
   constexpr std::string_view Start("start");
   constexpr std::string_view End("end");
 
-  size_t find_duplicates(VisitedSet v) {
-    v.erase(
-      std::remove_if(
-        v.begin(),
-        v.end(),
-        [](auto& s) { return !std::islower(s[0]); }),
-      v.end());
-
+  bool has_no_duplicates(VisitedSet v, const size_t max_small) {
     std::sort(v.begin(), v.end());
 
     VisitedSet::iterator it = v.begin();
     size_t count = 0;
-    while (it != v.end()) {
+    while (it != v.end() && count < max_small) {
       it = std::adjacent_find(it, v.end());
       if (it != v.end()) {
         count++;
@@ -34,7 +27,7 @@ namespace {
       }
     }
 
-    return count;
+    return count < max_small;
   }
 
   bool can_visit(const VisitedSet& v, std::string_view c, const size_t max_small) {
@@ -49,7 +42,7 @@ namespace {
       return true;
     }
 
-    return find_duplicates(v) < max_small;
+    return has_no_duplicates(v, max_small);
   }
 
   void walk_paths(const Graph& graph, const VisitedSet& v, std::string_view c, size_t& paths, const size_t max_small) {
@@ -68,7 +61,9 @@ namespace {
       }
 
       VisitedSet nv = v;
-      nv.push_back(n);
+      if (std::islower(n[0])) {
+        nv.push_back(n);
+      }
 
       walk_paths(graph, nv, n, paths, max_small);
     }
