@@ -55,7 +55,7 @@ namespace {
     const auto cn = graph.find(c);
     assert(cn != graph.end());
 
-    for (const auto n: cn->second) {
+    for (const auto& n: cn->second) {
       if (!can_visit(v, n, max_small)) {
         continue;
       }
