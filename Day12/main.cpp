@@ -45,7 +45,7 @@ namespace {
     return has_no_duplicates(v, max_small);
   }
 
-  void walk_paths(const Graph& graph, const VisitedSet& v, std::string_view c, size_t& paths, const size_t max_small) {
+  void walk_paths(const Graph& graph, VisitedSet& v, std::string_view c, size_t& paths, const size_t max_small) {
     DEBUG_PRINT(c);
     if (c == End) {
       paths++;
@@ -60,12 +60,15 @@ namespace {
         continue;
       }
 
-      VisitedSet nv = v;
       if (std::islower(n[0])) {
-        nv.push_back(n);
+        v.push_back(n);
       }
 
-      walk_paths(graph, nv, n, paths, max_small);
+      walk_paths(graph, v, n, paths, max_small);
+
+      if (std::islower(n[0])) {
+        v.pop_back();
+      }
     }
   }
 };
