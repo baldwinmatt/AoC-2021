@@ -20,10 +20,12 @@ namespace {
     }
 
     size_t get_width() const {
+      assert(is_width_set());
       return _width;
     }
 
     size_t get_height() const {
+      assert(is_width_set());
       return _g.size() / _width;
     }
 
@@ -36,7 +38,6 @@ namespace {
     }
 
     int get(size_t x, size_t y) const {
-      assert(is_width_set());
       x = x % get_width();
       y = y % get_height();
       assert((x + y * _width) < _g.size());
