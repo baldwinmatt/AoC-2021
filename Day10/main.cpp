@@ -80,10 +80,9 @@ int main(int argc, char** argv) {
     }
   }
 
-  std::cout << "Part 1: " << score << std::endl;
-  auto m = completion_scores.begin() + completion_scores.size() / 2;
+  const auto m = completion_scores.begin() + completion_scores.size() / 2;
   std::nth_element(completion_scores.begin(), m, completion_scores.end());
-  std::cout << "Part 2: " << completion_scores[completion_scores.size() / 2] << std::endl;
+  aoc::print_results(score, completion_scores[completion_scores.size() / 2]);
 
   return 0;
 }

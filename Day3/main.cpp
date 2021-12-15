@@ -101,7 +101,8 @@ int main(int argc, char** argv) {
     epsilon += ((!val) << shift);
     shift++;
   }
-  std::cout << "gamma: " << gamma << " epsilon: " << epsilon << " power: " << (gamma * epsilon) << std::endl;
+  DEBUG_PRINT("gamma: " << gamma << " epsilon: " << epsilon << " power: " << (gamma * epsilon));
+  aoc::print_result(1, (gamma * epsilon));
 
   std::list<std::vector<bool>> oxygen_list;
   std::list<std::vector<bool>> co2_list;
@@ -162,8 +163,9 @@ int main(int argc, char** argv) {
 
   const auto oxygen = from_binary(oxygen_list.front());
   const auto scrubber = from_binary(co2_list.front());
+  DEBUG_PRINT("oxygen: " << oxygen << " scrubber: " << scrubber << " life_support: " << (oxygen * scrubber));
 
-  std::cout << "oxygen: " << oxygen << " scrubber: " << scrubber << " life_support: " << (oxygen * scrubber) << std::endl;
+  aoc::print_result(2, (oxygen * scrubber));
 
   return 0;
 }

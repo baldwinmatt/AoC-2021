@@ -63,8 +63,7 @@ int main(int argc, char** argv) {
     walk_path(l);
   }
 
-  std::cout << "Part 1: " << (virt * horiz) << std::endl;
-  std::cout << "Part 2: " << (horiz * depth) << std::endl;
+  aoc::print_results((virt * horiz), (horiz * depth));
 
   return 0;
 }

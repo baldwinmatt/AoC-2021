@@ -173,8 +173,7 @@ int main(int argc, char** argv) {
     sum += DecodeOutput(decoder, io_pair);
   }
 
-  std::cout << "Part 1: " << is_decodable << std::endl;
-  std::cout << "Part 2: " << sum << std::endl;
+  aoc::print_results(is_decodable, sum);
   // Part 1: 532
   // Part 2: 1011284
 

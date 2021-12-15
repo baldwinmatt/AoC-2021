@@ -69,12 +69,12 @@ namespace {
     std::cout << std::endl;
   };
 
-  const auto DisplayBoard = [](const Board& b) {
+  void DisplayBoard(const Board& b) {
     for (auto &row : b) {
       DisplayRow(row);
     }
     std::cout << std::endl;
-  };
+  }
 };
 
 int main(int argc, char** argv) {
@@ -136,19 +136,21 @@ int main(int argc, char** argv) {
   // Play games
   bool has_won = false;
   for (const auto move : bingo_drawer) {
-
     auto it = boards.begin();
     while (it != boards.end()) {
       if (PlayMove((*it), move) && IsBoardComplete(*it)) {
         const auto score = GetBoardScore(*it);
         if (!has_won) {
-          DisplayBoard(*it);
-          std::cout << "1st: called: " << move << " score: " << score << " result: " << (score * move) << std::endl;
+          DEBUG(DisplayBoard(*it));
+          DEBUG_PRINT("1st: called: " << move << " score: " << score << " result: " << (score * move));
+
+          aoc::print_result(1, (score * move));
           has_won = true;
         }
         if (boards.size() == 1) {
-          DisplayBoard(*it);
-          std::cout << "Last: called: " << move << " score: " << score << " result: " << (score * move) << std::endl;
+          DEBUG(DisplayBoard(*it));
+          DEBUG_PRINT("Last: called: " << move << " score: " << score << " result: " << (score * move));
+          aoc::print_result(2, (score * move));
           return 0;
         }
         auto tmp = it;
@@ -158,7 +160,6 @@ int main(int argc, char** argv) {
         it++;
       }
     }
-
   }
 
   return 0;

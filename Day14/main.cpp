@@ -96,10 +96,11 @@ int main(int argc, char** argv) {
   for (int i = 0; i < 40; i++) {
     pc = step(pc, rules, freq);
     if (i == 9) {
-      std::cout << "Part 1: " << calculate_score(freq) << std::endl;
+      aoc::print_result(1, calculate_score(freq));
     }
   }
-  std::cout << "Part 2: " << calculate_score(freq) << std::endl;
+
+  aoc::print_result(2, calculate_score(freq));
   return 0;
 }
 

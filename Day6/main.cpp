@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     count += recycled;
     fish[tail] = recycled;
   }
-  std::cout << "Generation: " << pt_1_end << " count: " << count << std::endl;
+  aoc::print_result(1, count);
 
   for (int generation = pt_1_end; generation < pt_2_end; generation++) {
     const int64_t recycled = fish[head];
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     count += recycled;
     fish[tail] = recycled;
   }
-  std::cout << "Generation: " << pt_2_end << " count: " << count << std::endl;
+  aoc::print_result(2, count);
 
   return 0;
 }

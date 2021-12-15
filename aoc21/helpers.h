@@ -20,6 +20,16 @@
 #define STRING_CONSTANT(symbol, value) constexpr std::string_view symbol(value)
 
 namespace aoc {
+
+    const auto print_result = [](int part, auto result) {
+        std::cout << "Part " << part << ": " << result << std::endl;
+    };
+
+    const auto print_results = [](const auto& part1, const auto& part2) {
+        print_result(1, part1);
+        print_result(2, part2);
+    };
+
     auto open_argv_1(int argc, char **argv) {
         if (argc < 2) {
             throw std::runtime_error("Insufficient arguments");

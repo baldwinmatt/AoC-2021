@@ -27,29 +27,24 @@ int main(int argc, char** argv) {
     const int distance_to_median = (i > median) ? (i - median) : (median - i);
     return s + distance_to_median;
   });
-  std::cout << "Part 1: " << median << ", " << fuel << std::endl;
+  DEBUG_PRINT(median << ", " << fuel);
+  aoc::print_result(1, fuel);
 
   size_t fuel_up = std::reduce(pos.begin(), pos.end(), 0, [&mean_up](size_t s, const auto& i) {
     const int distance_to_mean = (i > mean_up) ? (i - mean_up) : (mean_up - i);
     const size_t fuel_to_mean = (distance_to_mean * distance_to_mean + distance_to_mean) / 2;
     return s + fuel_to_mean;
   });
-  DEBUG(std::cout << mean_up << ", " << fuel_up << std::endl);
+  DEBUG_PRINT(mean_up << ", " << fuel_up);
 
   size_t fuel_down = std::reduce(pos.begin(), pos.end(), 0, [&mean_down](size_t s, const auto& i) {
     const int distance_to_mean = (i > mean_down) ? (i - mean_down) : (mean_down - i);
     const size_t fuel_to_mean = (distance_to_mean * distance_to_mean + distance_to_mean) / 2;
     return s + fuel_to_mean;
   });
-  DEBUG(std::cout << mean_down << ", " << fuel_down << std::endl);
+  DEBUG_PRINT(mean_down << ", " << fuel_down);
 
-  std::cout << "Part 2: ";
-  fuel = std::min(fuel_up, fuel_down);
-  if (fuel == fuel_down) {
-    std::cout << mean_down << ", " << fuel_down << std::endl;
-  } else {
-    std::cout << mean_up << ", " << fuel_up << std::endl;
-  }
+  aoc::print_result(2, std::min(fuel_up, fuel_down));
 
   return 0;
 }

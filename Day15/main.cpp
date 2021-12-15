@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
       }
     }
 
-    std::cout << "Part " << i + 1 << ": " << costs.at(std::make_pair(total_width - 1, total_height - 1)) << std::endl;
+    aoc::print_result(i + 1, costs.at(std::make_pair(total_width - 1, total_height - 1)));
   }
 
   return 0;

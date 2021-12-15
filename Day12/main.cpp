@@ -100,14 +100,14 @@ int main(int argc, char** argv) {
     size_t paths = 0;
     VisitedSet v{};
     walk_paths(graph, v, Start, paths, 0);
-    std::cout << "Part 1: " << paths << std::endl;
+    aoc::print_result(1, paths);
   }
 
   {
     size_t paths = 0;
     VisitedSet v{};
     walk_paths(graph, v, Start, paths, 1);
-    std::cout << "Part 2: " << paths << std::endl;
+    aoc::print_result(2, paths);
   }
 
   return 0;

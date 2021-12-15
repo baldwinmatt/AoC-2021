@@ -82,8 +82,7 @@ int main(int argc, char** argv) {
 
   aoc::parse_as_integers(f, calculate_depths);
 
-  std::cout << "Part 1: " << deeper_count << std::endl;
-  std::cout << "Part 2: " << deeper_running_sum_count << std::endl;
+  aoc::print_results(deeper_count, deeper_running_sum_count);
 
   return 0;
 }

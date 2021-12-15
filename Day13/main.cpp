@@ -215,9 +215,7 @@ int main(int argc, char** argv) {
     }
   } while (aoc::getline(f, line));
 
-  std::cout << "Part 1: " << part1 << std::endl;
-
-  std::cout << s << std::endl;
+  aoc::print_results(part1, s);
 
   return 0;
 }

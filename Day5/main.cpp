@@ -135,9 +135,8 @@ int main(int argc, char** argv) {
     }
   };
 
+  aoc::AutoTimer t;
   for (int part = 0; part < 2; part++) {
-    aoc::AutoTimer t;
-
     auto f = aoc::open_argv_1(argc, argv);
 
     std::string s;
@@ -153,7 +152,7 @@ int main(int argc, char** argv) {
       return p;
     });
 
-    std::cout << "Part " << (part + 1) << ": " << points << std::endl;
+    aoc::print_result(part + 1, points);
     grid.clear();
   }
 
