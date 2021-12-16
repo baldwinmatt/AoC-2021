@@ -135,37 +135,45 @@ namespace aoc {
         }
     }
 
-    // Needs to be a lambda due to use of auto
-    auto calculate_time = [](const auto start) {
-        const auto end = std::chrono::high_resolution_clock::now();
-
-        // Calculating total time taken by the program.
-        double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-        time_taken *= 1e-9;
-
-        std::cout << "Elapsed : " << std::fixed << time_taken << std::setprecision(9) << " sec" << std::endl;
-    };
-
     class AutoTimer {
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+        std::string name_;
 
     public:
         AutoTimer()
             : start_(std::chrono::high_resolution_clock::now())
         { }
 
+        AutoTimer(const char *name)
+            : start_(std::chrono::high_resolution_clock::now())
+            , name_(name)
+        { }
+
         ~AutoTimer() {
-            aoc::calculate_time(start_);
+            calculate_time();
         }
 
         void elapsed() const {
-            aoc::calculate_time(start_);
+            calculate_time();
         }
 
         void reset() {
             start_ = std::chrono::high_resolution_clock::now();
         }
+
+    private:
+        // Needs to be a lambda due to use of auto
+        void calculate_time () const {
+            const auto end = std::chrono::high_resolution_clock::now();
+
+            // Calculating total time taken by the program.
+            double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start_).count();
+            time_taken *= 1e-9;
+
+            std::cout << "Elapsed" << (name_.empty() ? "" : " " + name_) << ": " << std::fixed << time_taken << std::setprecision(9) << " sec" << std::endl;
+        }
+
     };
 
 };
