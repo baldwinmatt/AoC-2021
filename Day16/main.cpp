@@ -207,14 +207,10 @@ int main(int argc, char** argv) {
     const size_t idx = streams.size();
     streams.resize(idx + 1);
     for (const auto& c : line) {
-      if (c == ',') {
-        // verification number
-        break;
-      }
       // Fill with zeroes
-      streams[idx].resize(stream_pos + 4, false);
       auto r = V.find(c);
       assert(r != V.end());
+      streams[idx].resize(stream_pos + 4, false);
       for (size_t p = 0; p < r->second.size(); p++) {
         streams[idx][stream_pos] = r->second[p];
         stream_pos++;
