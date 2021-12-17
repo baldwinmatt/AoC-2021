@@ -5,14 +5,11 @@
 namespace {
   using TargetArea = std::pair<aoc::Point, aoc::Point>;
 
-  const auto test_launch = [](const TargetArea& target, aoc::Point velocity, int& max_height) {
+  const auto test_launch = [](const TargetArea& target, aoc::Point velocity) {
     aoc::Point pos{0, 0};
-    max_height = 0;
-    
     while (true) {
       pos.first += velocity.first;
       pos.second += velocity.second;
-      max_height = std::max(pos.second, max_height);
 
       // in target, done
       if (pos.first >= target.first.first && pos.first <= target.second.first &&
@@ -24,9 +21,8 @@ namespace {
       if (pos.second < target.first.second) {
         return false;
       }
-
       // overshot if x if we are moving away
-      if (pos.first > target.second.first) {
+      else if (pos.first > target.second.first) {
         return false;
       }
 
@@ -72,30 +68,31 @@ int main(int argc, char** argv) {
   assert(!aoc::getline(f, tok, " =."));
   f.close();
 
-  // Generate y velocity values in the range miny -> minx * 5 (arbitrary)
-  std::vector<int> y_values(target.first.first * 5);
-  std::iota(y_values.begin(), y_values.end(), target.first.second);
+  const auto abs_min_y = std::abs(target.first.second);
+  {
+    aoc::AutoTimer part1("part 1");
+    const auto max_height = (abs_min_y - 1) * (abs_min_y / 2);
+    aoc::print_result(1, max_height);
+  }
 
-  const auto result = std::transform_reduce(y_values.begin(), y_values.end(), std::make_pair(INT_MIN, 0),
-    // reduce to [max, hits]
-    [](const auto& lhs, const auto& rhs) { return std::make_pair(std::max(lhs.first, rhs.first), lhs.second + rhs.second); },
-    // transform to max height for given y velocity
-    [&target](const int& y) {
-      int max_height = 0;
-      int hits = 0;
+  {
+    aoc::AutoTimer part2("part 2");
+    int hits = 0;
+    for (int y = target.first.second; y <= abs_min_y; y++) {
       // for each x from 1..targetmax.x
       for (int x = 1; x <= target.second.first; x++) {
-        int height = 0;
-        const bool hit = test_launch(target, {x, y}, height);
+        const auto card_x = (x * x + x) / 2;
+        if (card_x < target.first.first) {
+          continue;
+        }
+        const bool hit = test_launch(target, {x, y});
         if (hit) { // if we hit, record the max height
-          max_height = std::max(max_height, height);
           hits++;
         }
       }
-      return std::make_pair(max_height, hits);
-    });
-
-  aoc::print_results(result.first, result.second);
+    }
+    aoc::print_result(2, hits);
+  }
 
   return 0;
 }
