@@ -21,6 +21,8 @@
 
 namespace aoc {
 
+    using Point = std::pair<int, int>;
+
     const auto print_result = [](int part, auto result) {
         std::cout << "Part " << part << ": " << result << std::endl;
     };
