@@ -57,49 +57,33 @@ namespace {
     int64_t compute() const {
       switch (type) {
         case 0:
-          {
-            int64_t res = 0;
-            std::for_each(sub_packets.begin(), sub_packets.end(),
-              [&res](const auto& p) {
-                const auto r = p.compute();
-                DEBUG_PRINT("add " << res << ", " << r);
-                res += r;
-              });
-            return res;
-          }
+          return std::accumulate(sub_packets.begin(), sub_packets.end(), 0LL,
+            [](int64_t res, const auto& p) -> int64_t {
+              const auto r = p.compute();
+              DEBUG_PRINT("add " << res << ", " << r);
+              return res + r;
+            });
         case 1:
-          {
-            int64_t res = 1;
-            std::for_each(sub_packets.begin(), sub_packets.end(),
-              [&res](const auto& p) {
-                const auto r = p.compute();
-                DEBUG_PRINT("mul " << res << ", " << r);
-                res *= r;
-              });
-            return res;
-          }
+          return std::accumulate(sub_packets.begin(), sub_packets.end(), 1LL,
+            [](int64_t res, const auto& p) -> int64_t {
+              const auto r = p.compute();
+              DEBUG_PRINT("mul " << res << ", " << r);
+              return res * r;
+            });
         case 2:
-          {
-            int64_t res = INT64_MAX;
-            std::for_each(sub_packets.begin(), sub_packets.end(),
-              [&res](const auto& p) {
-                const auto r = p.compute();
-                DEBUG_PRINT("min " << res << ", " << r);
-                res = std::min(res, r);
+          return std::accumulate(sub_packets.begin(), sub_packets.end(), INT64_MAX,
+            [](int64_t res, const auto& p) -> int64_t {
+              const auto r = p.compute();
+              DEBUG_PRINT("min " << res << ", " << r);
+              return std::min(res, r);
             });
-            return res;
-          }
         case 3:
-          {
-            int64_t res = INT64_MIN;
-            std::for_each(sub_packets.begin(), sub_packets.end(),
-              [&res](const auto& p) {
-                const auto r = p.compute();
-                DEBUG_PRINT("max " << res << ", " << r);
-                res = std::max(res, r);
+          return std::accumulate(sub_packets.begin(), sub_packets.end(), INT64_MAX,
+            [](int64_t res, const auto& p) -> int64_t {
+              const auto r = p.compute();
+              DEBUG_PRINT("max " << res << ", " << r);
+              return std::max(res, r);
             });
-            return res;
-          }
         case 5:
           assert(sub_packets.size() == 2);
           {
@@ -140,7 +124,7 @@ namespace {
             bool last = false;
             do {
               last = read_integer_value(stream, pos, 1) == 0;
-              int d = read_integer_value(stream, pos, 4);
+              const int d = read_integer_value(stream, pos, 4);
               literal <<= 4;
               literal |= d;
             } while (!last);
