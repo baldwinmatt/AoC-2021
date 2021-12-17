@@ -5,15 +5,19 @@
 namespace {
   using TargetArea = std::pair<aoc::Point, aoc::Point>;
 
-  const auto test_launch = [](const TargetArea& target, aoc::Point velocity) {
+  const auto test_launch = [](const TargetArea& target, aoc::Point velocity, int& max_height) {
     aoc::Point pos{0, 0};
+    int height = max_height;
     while (true) {
       pos.first += velocity.first;
       pos.second += velocity.second;
 
+      height = std::max(height, pos.second);
+
       // in target, done
       if (pos.first >= target.first.first && pos.first <= target.second.first &&
           pos.second >= target.first.second && pos.second <= target.second.second) {
+        max_height = height;
         return true;
       }
 
@@ -69,30 +73,33 @@ int main(int argc, char** argv) {
   f.close();
 
   const auto abs_min_y = std::abs(target.first.second);
-  {
-    aoc::AutoTimer part1("part 1");
-    const auto max_height = (abs_min_y - 1) * (abs_min_y / 2);
-    aoc::print_result(1, max_height);
-  }
+  const auto closed_max_height = (abs_min_y - 1) * (abs_min_y / 2);
+  DEBUG_PRINT("Closed form: " << closed_max_height);
 
-  {
-    aoc::AutoTimer part2("part 2");
-    int hits = 0;
-    for (int y = target.first.second; y <= abs_min_y; y++) {
-      // for each x from 1..targetmax.x
-      for (int x = 1; x <= target.second.first; x++) {
-        const auto card_x = (x * x + x) / 2;
-        if (card_x < target.first.first) {
-          continue;
-        }
-        const bool hit = test_launch(target, {x, y});
-        if (hit) { // if we hit, record the max height
-          hits++;
-        }
+  int hits = 0;
+  int max_height = 0;
+  size_t tested = 0;
+  DEBUG_PRINT("X Range: 1.." << target.second.first);
+  DEBUG_PRINT("Y Range: " << target.first.second << ".." << abs_min_y);
+  for (int y = target.first.second; y <= abs_min_y; y++) {
+    // for each x from 1..targetmax.x
+    for (int x = 1; x <= target.second.first; x++) {
+      const auto card_x = (x * x + x) / 2;
+      if (card_x < target.first.first) {
+        continue;
+      }
+      tested++;
+      const bool hit = test_launch(target, {x, y}, max_height);
+      if (hit) {
+        DEBUG_PRINT("Hit { " << x << ", " << y << " }");
+        hits++;
       }
     }
-    aoc::print_result(2, hits);
   }
+  DEBUG_PRINT("Long form: " << max_height);
+  DEBUG_PRINT("tested: " << tested);
+  assert(closed_max_height == max_height);
+  aoc::print_results(closed_max_height, hits);
 
   return 0;
 }
