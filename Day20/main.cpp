@@ -56,20 +56,18 @@ namespace {
       return false;
     }
 
-    void set(const Point& pt, bool light) {
-      set(grid_, pt, light, top_left_, bottom_right_);
+    void light_up(const Point& pt) {
+      light_up(grid_, pt, top_left_, bottom_right_);
     }
 
-    void set(Grid& g, const Point& pt, bool light, Point& top_left, Point& bottom_right) const {
-      const auto r = g.insert(std::make_pair(pt, light));
-      r.first->second = light;
+    void light_up(Grid& g, const Point& pt, Point& top_left, Point& bottom_right) const {
+      const auto r = g.emplace(pt, true);
+      r.first->second = true;
 
-      if (light) {
-        top_left.first = std::min(top_left.first, pt.first);
-        top_left.second = std::min(top_left.second, pt.second);
-        bottom_right.first = std::max(bottom_right.first, pt.first);
-        bottom_right.second = std::max(bottom_right.second, pt.second);
-      }
+      top_left.first = std::min(top_left.first, pt.first);
+      top_left.second = std::min(top_left.second, pt.second);
+      bottom_right.first = std::max(bottom_right.first, pt.first);
+      bottom_right.second = std::max(bottom_right.second, pt.second);
     }
 
     int value_of(const Point& p) const {
@@ -104,11 +102,13 @@ namespace {
       // to enhance, get the binary value which represents the 9 pixels surrounding it
       Point tl{0, 0};
       Point br{0, 0};
-      for (size_t y = 0; y <= height + 6; y++) {
-        for (size_t x = 0; x <= width + 6; x++) {
-          const Point p{x + min_x - 3, y + min_y - 3};
+      for (size_t y = 0; y <= height + 2; y++) {
+        for (size_t x = 0; x <= width + 2; x++) {
+          const Point p{x + min_x - 1, y + min_y - 1};
           const auto v = value_of(p);
-          set(new_grid, p, alg[v], tl, br);
+          if (alg[v]) {
+            light_up(new_grid, p, tl, br);
+          }
           lit += alg[v];
         }
       }
@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
     for (const auto& c : line) {
       assert(c == '.' || c == '#');
       if (c == '#') {
-        image.set(pt, true);
+        image.light_up(pt);
       }
       pt.first++;
     }
