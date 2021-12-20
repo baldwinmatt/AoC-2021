@@ -2,6 +2,7 @@
 #include <array>
 #include <numeric>
 #include <map>
+#include <numeric>
 
 /*
 --- Day 5: Hydrothermal Venture ---
@@ -147,7 +148,7 @@ int main(int argc, char** argv) {
     }
 
     int points = 0;
-    points = std::reduce(grid.begin(), grid.end(), 0, [](int p, const auto& c) -> int {
+    points = std::accumulate(grid.begin(), grid.end(), 0, [](int p, const auto& c) -> int {
       p += (c.second >= 2);
       return p;
     });

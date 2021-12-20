@@ -44,9 +44,10 @@ namespace {
   };
 
   const auto calculate_score = [](const Frequencies& f) {
-    size_t min = SIZE_T_MAX;
+    size_t min = SIZE_MAX;
     size_t max = 0;
     for (const auto& [_, v] : f) {
+        (void)_;
         min = std::min(v, min);
         max = std::max(v, max);
     }

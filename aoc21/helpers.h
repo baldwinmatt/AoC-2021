@@ -6,6 +6,9 @@
 #include <string>
 #include <string_view>
 #include <chrono>
+#include <cassert>
+#include <functional>
+#include <iomanip>
 
 #ifndef NDEBUG
 #define DEBUG(x) do { \
@@ -18,6 +21,14 @@
 #define DEBUG_PRINT(x) do { DEBUG(std::cout << x << std::endl); } while (0)
 
 #define STRING_CONSTANT(symbol, value) constexpr std::string_view symbol(value)
+
+#ifndef INT_MIN
+#define INT_MIN std::numeric_limits<int>::min()
+#endif
+
+#ifndef INT_MAX
+#define INT_MAX std::numeric_limits<int>::max()
+#endif
 
 namespace aoc {
 

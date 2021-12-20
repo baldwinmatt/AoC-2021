@@ -128,8 +128,8 @@ int main(int argc, char** argv) {
   DEBUG(std::cout << "Total octupus: " << total_oct << std::endl);
 
   size_t flash_count = 0;
-  size_t first_syncd = SIZE_T_MAX;
-  for (size_t i = 0; i < 100 || first_syncd == SIZE_T_MAX; i++) {
+  size_t first_syncd = SIZE_MAX;
+  for (size_t i = 0; i < 100 || first_syncd == SIZE_MAX; i++) {
     const auto flashed = step(grid);
     if (flashed == total_oct) {
       DEBUG(DisplayGrid(grid));

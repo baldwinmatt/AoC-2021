@@ -10,8 +10,8 @@ namespace {
     size_t _width;
 
   public:
-    Grid() 
-      : _width(SIZE_T_MAX)
+    Grid()
+      : _width(SIZE_MAX)
     { }
 
     void set_width(size_t w) {
@@ -30,7 +30,7 @@ namespace {
     }
 
     bool is_width_set() const {
-      return _width != SIZE_T_MAX;
+      return _width != SIZE_MAX;
     }
 
     void push_back(int v) {
@@ -88,8 +88,8 @@ int main(int argc, char** argv) {
 
     to_visit.emplace(0, std::make_pair<size_t, size_t>(0, 0));
 
-    const size_t total_width = mult[i] * grid.get_width();
-    const size_t total_height = mult[i] * grid.get_height();
+    const ssize_t total_width = mult[i] * grid.get_width();
+    const ssize_t total_height = mult[i] * grid.get_height();
 
     while (!to_visit.empty()) {
       auto it = to_visit.begin();
@@ -105,8 +105,8 @@ int main(int argc, char** argv) {
       }
 
       for (const auto& dx : Directions) {
-        const size_t new_x = dx.first + x;
-        const size_t new_y = dx.second + y;
+        const ssize_t new_x = dx.first + x;
+        const ssize_t new_y = dx.second + y;
 
         if (new_x < 0 || new_x >= total_width) {
           continue;
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
           new_cost -= 9;
         }
 
-        DEBUG_PRINT("[ " << new_x << ", " << new_y << " ] -> " << (cost + new_cost)); 
+        DEBUG_PRINT("[ " << new_x << ", " << new_y << " ] -> " << (cost + new_cost));
         to_visit.emplace(cost + new_cost, std::make_pair(new_x, new_y));
       }
     }
