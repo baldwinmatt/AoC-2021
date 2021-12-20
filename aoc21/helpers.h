@@ -50,6 +50,10 @@ namespace aoc {
         return os << "\e[0m";
     }
 
+    std::ostream& cls(std::ostream& os) {
+        return os << "\033[2J\033[1;1H";
+    }
+
     bool getline(std::istream& s, std::string& out, const std::string_view delims) {
         char c;
         out.resize(0);
