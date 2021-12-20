@@ -1,13 +1,13 @@
 #include "aoc21/helpers.h"
 #include <vector>
-#include <map>
+#include <set>
 #include <chrono>
 #include <thread>
 
 namespace {
   using Point = aoc::Point;
   using Algorithm = std::vector<bool>;     // Light points are true
-  using Grid = std::map<Point, bool>;      // Light points are true
+  using Grid = std::set<Point>;            // Only lit points are stored
 
   const std::vector<Point> offsets{
     { -1, -1 },
@@ -51,7 +51,7 @@ namespace {
 
       const auto r = grid_.find(pt);
       if (r != grid_.end()) {
-        return r->second;
+        return true;
       }
       return false;
     }
@@ -61,8 +61,11 @@ namespace {
     }
 
     void light_up(Grid& g, const Point& pt, Point& top_left, Point& bottom_right) const {
-      const auto r = g.emplace(pt, true);
-      r.first->second = true;
+#if !defined(NDEBUG)
+      const auto r = 
+#endif
+        g.emplace(pt);
+      assert(r.second);
 
       top_left.first = std::min(top_left.first, pt.first);
       top_left.second = std::min(top_left.second, pt.second);
