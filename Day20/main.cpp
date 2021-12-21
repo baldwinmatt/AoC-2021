@@ -62,7 +62,7 @@ namespace {
 
     void light_up(Grid& g, const Point& pt, Point& top_left, Point& bottom_right) const {
 #if !defined(NDEBUG)
-      const auto r = 
+      const auto r =
 #endif
         g.emplace(pt);
       assert(r.second);
