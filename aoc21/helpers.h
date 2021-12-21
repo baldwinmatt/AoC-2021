@@ -33,6 +33,15 @@
 namespace aoc {
 
     using Point = std::pair<int, int>;
+    // Needed if we want to store a point in a hash
+    struct PointHash {
+        std::size_t operator() (const Point& pair) const {
+            size_t v = pair.first;
+            v <<= 32;
+            v |= pair.second;
+            return v;
+        }
+    };
 
     const auto print_result = [](int part, auto result) {
         std::cout << "Part " << part << ": " << result << std::endl;
