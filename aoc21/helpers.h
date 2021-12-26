@@ -18,7 +18,7 @@
 #define DEBUG(x)
 #endif
 
-#define DEBUG_PRINT(x) do { DEBUG(std::cout << x << std::endl); } while (0)
+#define DEBUG_PRINT(x) do { DEBUG(std::cout << __func__ << ":" << __LINE__ << ": " << x << std::endl); } while (0)
 
 #define STRING_CONSTANT(symbol, value) constexpr std::string_view symbol(value)
 
