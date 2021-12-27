@@ -174,22 +174,38 @@ int main(int argc, char** argv) {
   }
   f.close();
 
-  DEBUG_PRINT(image);
+  DEBUG(std::cout << aoc::cls << image << std::endl);
 
   size_t lit1 = 0;
   for (int i = 0; i < 2; i++) {
     lit1 = image.enhance(alg);
-    DEBUG(std::this_thread::sleep_for (std::chrono::milliseconds(100)));
-    DEBUG_PRINT(image);
+    if (i % 2) {
+      DEBUG(std::this_thread::sleep_for (std::chrono::milliseconds(10)));
+      DEBUG(std::cout << aoc::cls << image << std::endl);
+    }
   }
 
   size_t lit2 = 0;
   for (int i = 2; i < 50; i++) {
     lit2 = image.enhance(alg);
-    DEBUG(std::this_thread::sleep_for (std::chrono::milliseconds(100)));
-    DEBUG_PRINT(image);
+    if (i % 2) {
+      DEBUG(std::this_thread::sleep_for (std::chrono::milliseconds(10)));
+      DEBUG(std::cout << aoc::cls << image << std::endl);
+    }
   }
   aoc::print_results(lit1, lit2);
+
+  DEBUG(
+    bool show = true;
+    while(1) {
+      image.enhance(alg);
+      show = !show;
+      if (show) {
+        DEBUG(std::this_thread::sleep_for (std::chrono::milliseconds(10)));
+        DEBUG(std::cout << aoc::cls << image << std::endl);
+      }
+    }
+  );
 
   return 0;
 }
